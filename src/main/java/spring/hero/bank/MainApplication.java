@@ -1,6 +1,8 @@
 package spring.hero.bank;
 
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -18,10 +20,10 @@ public class MainApplication extends Application {
     private String accountName = "xuanhung";
     private int accountBalance = 50000;
 
-    private VBox vBox;
-    private HBox titleBox;
-    private HBox btnBox;
-    private GridPane gridPaneContent;
+    private VBox vBox; // bao ngoài cả 3 phần header, body, footer.
+    private HBox titleBox; // header chứa logo - text.
+    private GridPane gridPaneContent; // body chứa thông tin tài khoản.
+    private HBox btnBox; // footer chứa các button.
 
     private Label lblTitle;
     private Label lblAccount;
@@ -34,12 +36,29 @@ public class MainApplication extends Application {
     private Scene scene;
     private Stage mainStage;
     private MainApplication mainApplication;
+    private TransactionStage transactionStage;
+    private LoginStage loginStage;
+
+    private static boolean isLoggedIn = false;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
         this.mainApplication = this;
         this.mainStage = primaryStage;
+        initComponent();
+        if (isLoggedIn) {
+            // show stage.
+            this.mainStage.show();
+        } else {
+            this.loginStage = new LoginStage(this);
+            this.loginStage.show();
+        }
+    }
+
+    private void initComponent() {
         this.vBox = new VBox(); // layout
+
+        // xử lý phần header, logo.
         this.titleBox = new HBox();
         this.lblTitle = new Label("Spring Hero Bank");
         this.lblTitle.setFont(Font.font(17));
@@ -48,6 +67,7 @@ public class MainApplication extends Application {
         this.titleBox.setAlignment(Pos.TOP_LEFT);
         this.titleBox.setSpacing(10);
 
+        // xử lý phần body content.
         this.gridPaneContent = new GridPane();
         this.lblAccount = new Label("Account:");
         this.lblBalance = new Label("Balance:");
@@ -62,21 +82,38 @@ public class MainApplication extends Application {
         this.gridPaneContent.setVgap(10);
         this.gridPaneContent.setHgap(10);
 
+        // xử lý phần footer button.
         this.btnBox = new HBox();
         this.btnWithdraw = new Button("Withdraw");
         this.btnDeposit = new Button("Deposit");
+        this.btnWithdraw.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                transactionStage = new TransactionStage(1, mainApplication);
+                transactionStage.showAndWait();
+            }
+        });
+        this.btnDeposit.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                transactionStage = new TransactionStage(2, mainApplication);
+                transactionStage.showAndWait();
+            }
+        });
         this.btnBox.getChildren().addAll(this.btnWithdraw, this.btnDeposit);
         this.btnBox.setAlignment(Pos.CENTER);
         this.btnBox.setSpacing(10);
 
+        // ghép các phần với nhau, đưa tất cả và vbox.
         this.vBox.getChildren().addAll(this.titleBox, this.gridPaneContent, this.btnBox);
         this.vBox.setAlignment(Pos.CENTER);
         this.vBox.setSpacing(30);
         this.vBox.setPadding(new Insets(10, 10, 10, 10));
 
+        // nhồi vbox và scene.
         this.scene = new Scene(this.vBox, 300, 200);
+        // nhồi scene vào stage.
         this.mainStage.setScene(this.scene);
-        this.mainStage.show();
     }
 
     public static void main(String[] args) {
@@ -201,5 +238,37 @@ public class MainApplication extends Application {
 
     public void setMainStage(Stage mainStage) {
         this.mainStage = mainStage;
+    }
+
+    public MainApplication getMainApplication() {
+        return mainApplication;
+    }
+
+    public void setMainApplication(MainApplication mainApplication) {
+        this.mainApplication = mainApplication;
+    }
+
+    public TransactionStage getTransactionStage() {
+        return transactionStage;
+    }
+
+    public void setTransactionStage(TransactionStage transactionStage) {
+        this.transactionStage = transactionStage;
+    }
+
+    public LoginStage getLoginStage() {
+        return loginStage;
+    }
+
+    public void setLoginStage(LoginStage loginStage) {
+        this.loginStage = loginStage;
+    }
+
+    public static boolean isIsLoggedIn() {
+        return isLoggedIn;
+    }
+
+    public static void setIsLoggedIn(boolean isLoggedIn) {
+        MainApplication.isLoggedIn = isLoggedIn;
     }
 }
