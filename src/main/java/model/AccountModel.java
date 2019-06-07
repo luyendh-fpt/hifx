@@ -51,4 +51,14 @@ public class AccountModel {
         return false;
     }
 
+    public static void main(String[] args) {
+        AccountModel model = new AccountModel();
+        Account account = new Account();
+        account.setAccount("xuanhung1234");
+        account.setPassword("123");
+        account.setBalance(20000);
+        account.setStatus(1);
+        model.save(account);
+    }
+
 }
