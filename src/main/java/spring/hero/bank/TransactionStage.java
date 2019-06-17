@@ -13,6 +13,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import model.AccountModel;
 
 public class TransactionStage extends Stage {
 
@@ -31,6 +32,7 @@ public class TransactionStage extends Stage {
     private Scene scene;
     private Stage stage;
     private MainApplication mainApplication;
+    private AccountModel accountModel = new AccountModel();
 
     public TransactionStage() {
 

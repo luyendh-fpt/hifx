@@ -9,8 +9,5 @@ public class MyDemo {
         System.out.println(status.getValue());
     }
 
-    public static void setEnum(DemoEnum demoEnum){
-        System.out.println(demoEnum.name());
-        System.out.println(demoEnum.getValue());
-    }
+
 }
