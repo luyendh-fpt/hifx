@@ -20,7 +20,7 @@ public class AccountModel {
             if (resultSet.next()) {
                 String rsAccount = resultSet.getString(1);
                 String rsPassword = resultSet.getString(2);
-                int rsBalance = resultSet.getInt(3);
+                double rsBalance = resultSet.getDouble(3);
                 int rsStatus = resultSet.getInt(4);
                 Account existAccount = new Account();
                 existAccount.setAccount(rsAccount);
@@ -41,7 +41,7 @@ public class AccountModel {
             PreparedStatement preparedStatement = ConnectionHelper.getConnection().prepareStatement(sqlCommand);
             preparedStatement.setString(1, account.getAccount());
             preparedStatement.setString(2, account.getPassword());
-            preparedStatement.setInt(3, account.getBalance());
+            preparedStatement.setDouble(3, account.getBalance());
             preparedStatement.setInt(4, account.getStatus());
             preparedStatement.execute();
             return true;

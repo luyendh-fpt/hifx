@@ -78,7 +78,7 @@ public class TransactionStage extends Stage {
                     // tự mà làm label lỗi.
                     // tự mà check số lượng.
                 }
-                int currentBalance = (action == 1) ? (mainApplication.getAccountBalance() - amount) : (mainApplication.getAccountBalance() + amount);
+                double currentBalance = (action == 1) ? (mainApplication.getAccountBalance() - amount) : (mainApplication.getAccountBalance() + amount);
                 mainApplication.getLblBalanceValue().setText(String.valueOf(currentBalance));
                 mainApplication.setAccountBalance(currentBalance);
                 stage.close();

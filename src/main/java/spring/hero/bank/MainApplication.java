@@ -18,7 +18,7 @@ import javafx.stage.Stage;
 public class MainApplication extends Application {
 
     private String accountName = "xuanhung";
-    private int accountBalance = 50000;
+    private double accountBalance = 50000;
 
     private VBox vBox; // bao ngoài cả 3 phần header, body, footer.
     private HBox titleBox; // header chứa logo - text.
@@ -136,8 +136,12 @@ public class MainApplication extends Application {
         this.accountName = accountName;
     }
 
-    public int getAccountBalance() {
+    public double getAccountBalance() {
         return accountBalance;
+    }
+
+    public void setAccountBalance(double accountBalance) {
+        this.accountBalance = accountBalance;
     }
 
     public void setAccountBalance(int accountBalance) {

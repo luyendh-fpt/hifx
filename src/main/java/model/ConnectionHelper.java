@@ -7,7 +7,7 @@ import java.sql.SQLException;
 public class ConnectionHelper {
 
     private static Connection connection;
-    private static final String DATABASE_NAME = "mimax";
+    private static final String DATABASE_NAME = "spring-hero-bank";
     private static final String DATABASE_USER = "root";
     private static final String DATABASE_PASSWORD = "abcD1234";
 

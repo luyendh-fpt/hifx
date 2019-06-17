@@ -4,8 +4,36 @@ public class Account {
 
     private String account;
     private String password;
-    private int balance;
+    private double balance;
     private int status;
+
+    public enum Status {
+
+        ACTIVE(1), DEACTIVE(0), DELETED(-1);
+
+        private int value;
+
+        Status(int value) {
+            this.value = value;
+        }
+
+        public static SpringTransaction.Status findByValue(int value) {
+            for (int i = 0; i < SpringTransaction.Status.values().length; i++) {
+                if (SpringTransaction.Status.values()[i].getValue() == value) {
+                    return SpringTransaction.Status.values()[i];
+                }
+            }
+            return SpringTransaction.Status.UNDEFINED;
+        }
+
+        public int getValue() {
+            return value;
+        }
+
+        public void setValue(int value) {
+            this.value = value;
+        }
+    }
 
     public Account() {
     }
@@ -26,11 +54,11 @@ public class Account {
         this.password = password;
     }
 
-    public int getBalance() {
+    public double getBalance() {
         return balance;
     }
 
-    public void setBalance(int balance) {
+    public void setBalance(double balance) {
         this.balance = balance;
     }
 
