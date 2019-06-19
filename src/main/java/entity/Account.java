@@ -7,6 +7,11 @@ public class Account {
     private double balance;
     private int status;
 
+    public boolean isNotActive() {
+        return this.status == Status.DEACTIVE.getValue()
+                || this.status == Status.DELETED.getValue();
+    }
+
     public enum Status {
 
         ACTIVE(1), DEACTIVE(0), DELETED(-1);

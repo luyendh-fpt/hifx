@@ -25,7 +25,9 @@ public class TransactionStage extends Stage {
     private int action; // 1. withdraw | 2. deposit
     private Label lblAction;
     private Label lblAmount;
+    private Label lblReceiverAccountNumber;
     private TextField txtAmount;
+    private TextField txtReceiverAccountNumber;
     private Button btnSubmit;
     private Button btnCancel;
 
@@ -43,7 +45,11 @@ public class TransactionStage extends Stage {
         this.stage = this;
         this.mainApplication = mainApplication;
         initComponent();
-        this.scene = new Scene(this.vBox, 270, 170);
+        if (this.action == 3) {
+            this.scene = new Scene(this.vBox, 330, 220);
+        } else {
+            this.scene = new Scene(this.vBox, 270, 170);
+        }
         this.setScene(this.scene);
         this.initModality(Modality.APPLICATION_MODAL);
     }
@@ -51,8 +57,12 @@ public class TransactionStage extends Stage {
     private void initComponent() {
         if (this.action == 1) {
             this.lblAction = new Label("Withdraw");
-        } else {
+        } else if (this.action == 2) {
             this.lblAction = new Label("Deposit");
+        } else if (this.action == 3) {
+            this.lblAction = new Label("Transfer");
+            this.lblReceiverAccountNumber = new Label("Receiver Account");
+            this.txtReceiverAccountNumber = new TextField();
         }
         this.hBox = new HBox();
         this.hBox.setSpacing(10);
@@ -80,7 +90,22 @@ public class TransactionStage extends Stage {
                     // tự mà làm label lỗi.
                     // tự mà check số lượng.
                 }
-                double currentBalance = (action == 1) ? (mainApplication.getAccountBalance() - amount) : (mainApplication.getAccountBalance() + amount);
+                // truy vấn db một lần nữa.
+                double currentBalance = 0;
+                switch (action) {
+                    case 1:
+                        accountModel.withdraw(mainApplication.getAccountName(), amount);
+                        currentBalance = mainApplication.getAccountBalance() - amount;
+                        break;
+                    case 2:
+                        accountModel.deposit(mainApplication.getAccountName(), amount);
+                        currentBalance = mainApplication.getAccountBalance() + amount;
+                        break;
+                    case 3:
+                        accountModel.transfer(mainApplication.getAccountName(), txtReceiverAccountNumber.getText(), amount);
+                        currentBalance = mainApplication.getAccountBalance() - amount;
+                        break;
+                }
                 mainApplication.getLblBalanceValue().setText(String.valueOf(currentBalance));
                 mainApplication.setAccountBalance(currentBalance);
                 stage.close();
@@ -93,13 +118,25 @@ public class TransactionStage extends Stage {
             }
         });
 
-        this.gridPane.add(this.lblAmount, 0, 0);
-        this.gridPane.add(this.txtAmount, 1, 0);
+        if (this.action == 3) {
+            this.gridPane.add(this.lblReceiverAccountNumber, 0, 0);
+            this.gridPane.add(this.txtReceiverAccountNumber, 1, 0);
+            this.gridPane.add(this.lblAmount, 0, 1);
+            this.gridPane.add(this.txtAmount, 1, 1);
+        } else {
+            this.gridPane.add(this.lblAmount, 0, 0);
+            this.gridPane.add(this.txtAmount, 1, 0);
+        }
+
         this.btnHbox = new HBox();
         this.btnHbox.setPadding(new Insets(10));
         this.btnHbox.setSpacing(10);
         this.btnHbox.getChildren().addAll(this.btnSubmit, this.btnCancel);
-        this.gridPane.add(this.btnHbox, 1, 1);
+        if (this.action == 3) {
+            this.gridPane.add(this.btnHbox, 1, 2);
+        } else {
+            this.gridPane.add(this.btnHbox, 1, 1);
+        }
 
         this.vBox = new VBox();
         this.vBox.setPadding(new Insets(10));

@@ -32,6 +32,7 @@ public class MainApplication extends Application {
     private Label lblBalanceValue;
     private Button btnWithdraw;
     private Button btnDeposit;
+    private Button btnTransfer;
 
     private Scene scene;
     private Stage mainStage;
@@ -86,6 +87,7 @@ public class MainApplication extends Application {
         this.btnBox = new HBox();
         this.btnWithdraw = new Button("Withdraw");
         this.btnDeposit = new Button("Deposit");
+        this.btnTransfer = new Button("Transfer");
         this.btnWithdraw.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -100,7 +102,14 @@ public class MainApplication extends Application {
                 transactionStage.showAndWait();
             }
         });
-        this.btnBox.getChildren().addAll(this.btnWithdraw, this.btnDeposit);
+        this.btnTransfer.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                transactionStage = new TransactionStage(3, mainApplication);
+                transactionStage.showAndWait();
+            }
+        });
+        this.btnBox.getChildren().addAll(this.btnWithdraw, this.btnDeposit, this.btnTransfer);
         this.btnBox.setAlignment(Pos.CENTER);
         this.btnBox.setSpacing(10);
 
